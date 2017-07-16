@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+# Copyright 2016 Dave Lasley
+# License Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html).
+
+# This script will test that EXPECT is in the output from COMMAND
+
+import os
+import subprocess
+
+docker_repo = os.environ.get('DOCKER_REPO', 'laslabs/docker-test')
+docker_tag = os.environ.get('DOCKER_TAG', 'latest')
+
+EXPECT="Use: makemkvcon [switches] Command [Parameters]"
+
+cmd = 'docker run -t %s:%s' % (docker_repo, docker_tag)
+
+process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+out, err = process.communicate()
+
+assert EXPECT in '%s %s' % (out, err)
