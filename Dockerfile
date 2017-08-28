@@ -21,7 +21,9 @@ RUN set -ex; \
 	'; \
    	apt-get update; \
 	apt-get install -y --no-install-recommends $buildDeps; \
-	apt-get install -y python; \
+	apt-get install -y ca-certificates-java \
+	                   openjdk-8-jre-headless \
+	                   python; \
     \
 # Install MakeMKV.
  	for pkg in makemkv-oss makemkv-bin; do \
