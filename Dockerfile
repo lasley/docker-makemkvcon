@@ -1,7 +1,7 @@
 FROM debian:stretch
 MAINTAINER Dave Lasley <dave@dlasley.net>
 
-ARG MAKEMKV_VERSION=1.10.6
+ARG MAKEMKV_VERSION=1.10.7
 ARG PREFIX=/usr/local
 
 # Install MakeMKV dependencies.
