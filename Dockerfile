@@ -21,11 +21,8 @@ RUN set -ex; \
 	'; \
    	apt-get update; \
 	apt-get install -y --no-install-recommends $buildDeps; \
-	apt-get install -y ca-certificates-java \
-	                   openjdk-8-jre-headless \
-	                   python; \
     \
-# Install MakeMKV.
+    echo "Install MakeMKV."; \
  	for pkg in makemkv-oss makemkv-bin; do \
 		wget -O "${pkg}.tgz" "http://www.makemkv.com/download/${pkg}-${MAKEMKV_VERSION}.tar.gz"; \
 		mkdir -p "${pkg}"; \
@@ -44,7 +41,7 @@ RUN set -ex; \
 		rm -r "${pkg}"; \
 	done; \
     \
-# Some of the packages are still required.
+    echo "Some of the packages are still required"; \
  	apt-mark manual \
 		libavcodec57 \
 		libqtdbus4 \
@@ -52,14 +49,21 @@ RUN set -ex; \
 		libssl1.1 \
 	; \
 	\
-# Save the beta key for usage in entrypoint.
+	echo "Save the beta key for usage in the entrypoint"; \
  	wget -S --no-check-certificate -O - "http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053" \
 	    | awk 'FNR == 243 {print $57}' \
 	    | cut -c 21-88 > /BETA_KEY; \
     \
-# Purge the cache and dependencies.
-    rm -rf /var/lib/apt/lists/*; \
-    apt-get purge -y --auto-remove $buildDeps;
+    echo "Purge the dependencies"; \
+    apt-get purge -y --auto-remove $buildDeps; \
+    echo "Install a few other required binaries"; \
+    apt-get install -y \
+        ca-certificates-java \
+        openjdk-8-jre-headless \
+        python; \
+    \
+    echo "Purge the apt cache"; \
+    rm -rf /var/lib/apt/lists/*;
 
 RUN mkdir -p ~/.MakeMKV
 
