@@ -7,6 +7,9 @@ services:
 
 env:
 
+  global:
+    - LINT_IGNORE="SC2086,SC2103,DL3008"
+
   matrix:
     - TESTS="1"
     - LINT_CHECK="1"
