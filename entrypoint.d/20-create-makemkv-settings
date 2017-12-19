@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import json
+import re
+import requests
 
 from os import environ, path
 
@@ -13,8 +15,22 @@ SETTINGS_FILE = path.join(path.expanduser('~'), '.MakeMKV/settings.conf')
 settings = {}
 
 if not APP_KEY:
-    with open(APP_KEY_FILE, 'r') as fh:
-        APP_KEY = fh.read().strip()
+    try:
+        with open(APP_KEY_FILE, 'r') as fh:
+            APP_KEY = fh.read().strip()
+    except IOError:
+        # Key file is not present
+        pass
+
+if not APP_KEY:
+    response = requests.get(
+        'http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053',
+    )
+    matches = re.search(
+        '<div class="codecontent">(?P<key>.+?)</div>',
+        response.text,
+    )
+    APP_KEY = matches.group('key')
 
 settings.update({
     'app_Key': APP_KEY,

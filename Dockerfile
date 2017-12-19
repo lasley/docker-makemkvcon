@@ -49,18 +49,14 @@ RUN set -ex; \
 		libssl1.1 \
 	; \
 	\
-	echo "Save the beta key for usage in the entrypoint"; \
- 	wget -S --no-check-certificate -O - "http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053" \
-	    | awk 'FNR == 243 {print $57}' \
-	    | cut -c 21-88 > /BETA_KEY; \
-    \
     echo "Purge the dependencies"; \
     apt-get purge -y --auto-remove $buildDeps; \
     echo "Install a few other required binaries"; \
     apt-get install -y \
         ca-certificates-java \
         openjdk-8-jre-headless \
-        python; \
+        python \
+        python-requests; \
     \
     echo "Purge the apt cache"; \
     rm -rf /var/lib/apt/lists/*;
