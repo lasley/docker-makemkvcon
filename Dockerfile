@@ -1,5 +1,4 @@
 FROM debian:stretch
-MAINTAINER Dave Lasley <dave@dlasley.net>
 
 ARG MAKEMKV_VERSION=1.10.8
 ARG PREFIX=/usr/local
@@ -68,3 +67,17 @@ COPY entrypoint.d/ /entrypoint.d/
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["makemkvcon"]
+
+# Metadata
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+LABEL maintainer="Dave Lasley <dave@dlasley.net>" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="MakeMKV" \
+      org.label-schema.description="Provides MakeMKV CLI in Docker." \
+      org.label-schema.url="https://hub.docker.com/r/lasley/makemkvcon/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/lasley/docker-makemkvcon" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
