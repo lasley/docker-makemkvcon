@@ -1,5 +1,4 @@
 FROM debian:stretch
-MAINTAINER Dave Lasley <dave@dlasley.net>
 
 ARG MAKEMKV_VERSION=1.10.8
 ARG PREFIX=/usr/local
@@ -49,18 +48,14 @@ RUN set -ex; \
 		libssl1.1 \
 	; \
 	\
-	echo "Save the beta key for usage in the entrypoint"; \
- 	wget -S --no-check-certificate -O - "http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053" \
-	    | awk 'FNR == 243 {print $57}' \
-	    | cut -c 21-88 > /BETA_KEY; \
-    \
     echo "Purge the dependencies"; \
     apt-get purge -y --auto-remove $buildDeps; \
     echo "Install a few other required binaries"; \
     apt-get install -y \
         ca-certificates-java \
         openjdk-8-jre-headless \
-        python; \
+        python \
+        python-requests; \
     \
     echo "Purge the apt cache"; \
     rm -rf /var/lib/apt/lists/*;
@@ -72,3 +67,17 @@ COPY entrypoint.d/ /entrypoint.d/
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["makemkvcon"]
+
+# Metadata
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+LABEL maintainer="Dave Lasley <dave@dlasley.net>" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="MakeMKV" \
+      org.label-schema.description="Provides MakeMKV CLI in Docker." \
+      org.label-schema.url="https://hub.docker.com/r/lasley/makemkvcon/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/lasley/docker-makemkvcon" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
