@@ -30,6 +30,7 @@ pleasure:
 
 | Name | Default | Description |
 |------|---------|-------------|
+| `APP_KEY` | None | MakeMKV software key. If this is left blank, a beta key will be downloaded and used. |
 
 Known Issues / Roadmap
 ======================
