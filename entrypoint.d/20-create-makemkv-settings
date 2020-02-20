@@ -24,10 +24,10 @@ if not APP_KEY:
 
 if not APP_KEY:
     response = requests.get(
-        'http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053',
+        'http://www.makemkv.com/forum/viewtopic.php?f=5&t=1053',
     )
     matches = re.search(
-        '<div class="codecontent">(?P<key>.+?)</div>',
+        '<code>(?P<key>.+?)</code>',
         response.text,
     )
     APP_KEY = matches.group('key')
